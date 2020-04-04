@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+set -e
+set -o pipefail
+
+VSCODE_REMOTECONAINER_TEMPLATE_DIR=${VSCODE_REMOTECONAINER_TEMPLATE_DIR:-$(
+  cd "$(dirname "$0")"
+  pwd
+)/container_templates}
+
+if [[ $# == 0 ]]; then
+  echo "usage: $(basename "$0") templatename [projectname]"
+  exit 1
+fi
+template_dir="${VSCODE_REMOTECONAINER_TEMPLATE_DIR}/$1"
+if [[ "$2" == "" ]]; then
+  projectname="$(basename "$(pwd)")"
+else
+  projectname="$2"
+fi
+
+if [[ ! -d "$template_dir" ]]; then
+  echo "template does not exist" >&2
+  exit 1
+fi
+
+if [[ -d "./.devcontainer" ]]; then
+  echo "./devcontainer already exists" >&2
+  exit 1
+fi
+mkdir -p "./.devcontainer"
+
+while read -r file; do
+  templatename="$(basename "$file")"
+  echo "$templatename"
+  sed "s/%PROJECTNAME%/$projectname/g" "$file" >"./.devcontainer/${templatename/.template/}"
+done < <(find "$template_dir" -type f -name "*.template")
