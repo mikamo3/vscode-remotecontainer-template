@@ -1,12 +1,11 @@
 #!/usr/bin/env bash
-
 set -e
 set -o pipefail
 
-VSCODE_REMOTECONAINER_TEMPLATE_DIR=${VSCODE_REMOTECONAINER_TEMPLATE_DIR:-$(
-  cd "$(dirname "$0")"
-  pwd
-)/container_templates}
+# readlink -f is GNU only
+echo "$(readlink -f $0)"
+echo "$(dirname $(readlink -f $0))"
+VSCODE_REMOTECONAINER_TEMPLATE_DIR=${VSCODE_REMOTECONAINER_TEMPLATE_DIR:-"$(dirname "$(readlink -f "$0")")/container_templates"}
 
 if [[ $# == 0 ]]; then
   echo "usage: $(basename "$0") templatename [projectname]"
