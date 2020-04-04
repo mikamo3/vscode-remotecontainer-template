@@ -3,10 +3,7 @@ set -e
 set -o pipefail
 
 # readlink -f is GNU only
-echo "$(readlink -f $0)"
-echo "$(dirname $(readlink -f $0))"
 VSCODE_REMOTECONAINER_TEMPLATE_DIR=${VSCODE_REMOTECONAINER_TEMPLATE_DIR:-"$(dirname "$(readlink -f "$0")")/container_templates"}
-
 if [[ $# == 0 ]]; then
   echo "usage: $(basename "$0") templatename [projectname]"
   exit 1
@@ -31,6 +28,5 @@ mkdir -p "./.devcontainer"
 
 while read -r file; do
   templatename="$(basename "$file")"
-  echo "$templatename"
   sed "s/%PROJECTNAME%/$projectname/g" "$file" >"./.devcontainer/${templatename/.template/}"
 done < <(find "$template_dir" -type f -name "*.template")
