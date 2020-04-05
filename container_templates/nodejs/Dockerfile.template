@@ -13,7 +13,7 @@ RUN apk update && \
   rm -rf /var/cache/apk/*
 
 RUN apk update && \
-  apk add git bash nodejs=${NODE_VER} yarn=${YARN_VER} sudo && \
+  apk add git bash nodejs=${NODE_VER} yarn=${YARN_VER} sudo openssh && \
   rm -rf /var/cache/apk/*
 
 RUN yarn global add commitizen@${COMMITIZEN_VER} cz-emoji@${CZ_EMOJI_VER}
