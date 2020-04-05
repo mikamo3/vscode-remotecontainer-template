@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 set -e
-set -o pipefail
 
 # readlink -f is GNU only
 VSCODE_REMOTECONAINER_TEMPLATE_DIR=${VSCODE_REMOTECONAINER_TEMPLATE_DIR:-"$(dirname "$(readlink -f "$0")")/container_templates"}
